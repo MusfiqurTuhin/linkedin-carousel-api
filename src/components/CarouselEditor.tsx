@@ -122,9 +122,9 @@ export function CarouselEditor() {
             console.log("📸 Starting HD download with modern-screenshot...")
 
             // Use modern-screenshot which supports modern CSS colors
-            // Scale 4 = 4x resolution for HD quality
+            // Scale 6 = 6x resolution for Ultra HD quality
             const dataUrl = await domToPng(el, {
-                scale: 4,
+                scale: 6,
                 quality: 1,
             })
 
@@ -280,7 +280,7 @@ export function CarouselEditor() {
         try {
             setIsLoading(true)
             const { width, height } = getDimensions()
-            const scale = 4  // High quality: 4x resolution
+            const scale = 6  // Ultra HD quality: 6x resolution
 
             // Create PDF with high resolution
             const doc = new jsPDF({
@@ -348,7 +348,7 @@ export function CarouselEditor() {
                         <Sparkles className="h-5 w-5 text-purple-400" />
                         AI Carousel <span className="text-purple-400">Pro</span>
                     </h1>
-                    <p className="text-xs text-slate-400 mt-1">Dribbble-ready designs in seconds.</p>
+                    <p className="text-xs text-slate-400 mt-1">LinkedIn-ready designs in seconds.</p>
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
@@ -369,21 +369,30 @@ export function CarouselEditor() {
                                 <label className="text-xs font-medium text-slate-300">Slide Count</label>
                                 <span className="text-xs font-bold text-purple-400">{days} Slides</span>
                             </div>
+                            <input
+                                type="range"
+                                min="3"
+                                max="15"
+                                value={days}
+                                onChange={(e) => setDays(Number(e.target.value))}
+                                className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                            />
                         </div>
 
-                        {/* API Key Input */}
+                        {/* API Key Input - MANDATORY */}
                         <div className="space-y-2 pt-2 border-t border-slate-800">
                             <label className="text-xs font-medium text-slate-300 flex justify-between">
-                                API Key (Optional)
-                                <a href="https://aistudio.google.com/app/apikey" target="_blank" className="text-purple-400 hover:text-purple-300 text-[10px]">Get Key ↗</a>
+                                <span className="flex items-center gap-1">Gemini API Key <span className="text-red-400">*</span></span>
+                                <a href="https://aistudio.google.com/app/apikey" target="_blank" className="text-purple-400 hover:text-purple-300 text-[10px]">Get Free Key ↗</a>
                             </label>
                             <input
                                 type="password"
-                                placeholder="Paste your Gemini API Key..."
+                                placeholder="Paste your Gemini API Key (Required)"
                                 value={apiKey}
                                 onChange={(e) => handleApiKeyChange(e.target.value)}
-                                className="w-full h-8 px-2 bg-slate-900 border border-slate-700 rounded text-xs text-white placeholder:text-slate-600 focus:border-purple-500 outline-none"
+                                className={`w-full h-8 px-2 bg-slate-900 border rounded text-xs text-white placeholder:text-slate-600 focus:border-purple-500 outline-none ${!apiKey ? 'border-red-500/50' : 'border-slate-700'}`}
                             />
+                            {!apiKey && <p className="text-[10px] text-red-400">⚠️ API key required. Get your free key from Google AI Studio.</p>}
                         </div>
 
                         <Button
