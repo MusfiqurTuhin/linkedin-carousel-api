@@ -58,6 +58,11 @@ export function CarouselEditor() {
     const [brandHandle, setBrandHandle] = useState('')
     const [apiKey, setApiKey] = useState('')
 
+    // CTA (Call to Action) State
+    const [ctaEmail, setCtaEmail] = useState('')
+    const [ctaPhone, setCtaPhone] = useState('')
+    const [ctaText, setCtaText] = useState('Let\'s Connect!')
+
     // Refs
     const slideRefs = useRef<(HTMLDivElement | null)[]>([])
 
@@ -678,6 +683,35 @@ export function CarouselEditor() {
                                 onChange={(e) => setBrandHandle(e.target.value)}
                             />
                         </div>
+
+                        {/* CTA Section for Last Slide */}
+                        <div className="space-y-3 pt-3 border-t border-slate-700">
+                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500">📞 Last Slide CTA</h4>
+                            <div className="space-y-2">
+                                <input
+                                    className="w-full h-8 px-3 border border-slate-700 bg-slate-900 text-white rounded-md text-xs focus:border-purple-500 outline-none placeholder:text-slate-600"
+                                    placeholder="CTA Text: Let's Connect!"
+                                    value={ctaText}
+                                    onChange={(e) => setCtaText(e.target.value)}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <input
+                                    className="w-full h-8 px-3 border border-slate-700 bg-slate-900 text-white rounded-md text-xs focus:border-purple-500 outline-none placeholder:text-slate-600"
+                                    placeholder="📧 Email: your@email.com"
+                                    value={ctaEmail}
+                                    onChange={(e) => setCtaEmail(e.target.value)}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <input
+                                    className="w-full h-8 px-3 border border-slate-700 bg-slate-900 text-white rounded-md text-xs focus:border-purple-500 outline-none placeholder:text-slate-600"
+                                    placeholder="📱 Phone: +880 1XXX-XXXXXX"
+                                    value={ctaPhone}
+                                    onChange={(e) => setCtaPhone(e.target.value)}
+                                />
+                            </div>
+                        </div>
                     </section>
                 </div>
             </div >
@@ -865,6 +899,32 @@ export function CarouselEditor() {
                                                     >
                                                         {slide.content}
                                                     </p>
+
+                                                    {/* CTA Section for Last Slide */}
+                                                    {idx === slides.length - 1 && (ctaEmail || ctaPhone) && (
+                                                        <div className="mt-auto pt-4 space-y-3">
+                                                            <p
+                                                                className="text-lg font-bold"
+                                                                style={{ color: primaryColor, fontFamily: font }}
+                                                            >
+                                                                {ctaText || "Let's Connect!"}
+                                                            </p>
+                                                            <div className="space-y-2">
+                                                                {ctaEmail && (
+                                                                    <div className="flex items-center gap-2 text-sm" style={{ color: textColor }}>
+                                                                        <span>📧</span>
+                                                                        <span style={{ fontFamily: font }}>{ctaEmail}</span>
+                                                                    </div>
+                                                                )}
+                                                                {ctaPhone && (
+                                                                    <div className="flex items-center gap-2 text-sm" style={{ color: textColor }}>
+                                                                        <span>📱</span>
+                                                                        <span style={{ fontFamily: font }}>{ctaPhone}</span>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    )}
 
                                                     {/* Layout: CLASSIC (Bottom Image) */}
                                                     {(!slide.layout || slide.layout === 'classic') && (slide.custom_image_url || slide.image_prompt) && (
