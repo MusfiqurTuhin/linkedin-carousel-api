@@ -119,17 +119,17 @@ export function CarouselEditor() {
 
         try {
             setIsLoading(true)
-            console.log("📸 Starting download with modern-screenshot...")
+            console.log("📸 Starting HD download with modern-screenshot...")
 
             // Use modern-screenshot which supports modern CSS colors
+            // Scale 4 = 4x resolution for HD quality
             const dataUrl = await domToPng(el, {
-                scale: 2,
-                backgroundColor: '#1e1b4b',
+                scale: 4,
                 quality: 1,
             })
 
             const safeTopic = topic.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 20) || 'carousel'
-            const filename = `${safeTopic}_slide_${index + 1}.png`
+            const filename = `${safeTopic}_slide_${index + 1}_HD.png`
 
             // Download
             const link = document.createElement('a')
@@ -137,7 +137,7 @@ export function CarouselEditor() {
             link.download = filename
             link.click()
 
-            console.log(`✅ Downloaded: ${filename}`)
+            console.log(`✅ Downloaded HD: ${filename}`)
 
         } catch (error: any) {
             console.error("❌ Download failed:", error?.message)
@@ -280,32 +280,33 @@ export function CarouselEditor() {
         try {
             setIsLoading(true)
             const { width, height } = getDimensions()
+            const scale = 4  // High quality: 4x resolution
 
-            // Create PDF
+            // Create PDF with high resolution
             const doc = new jsPDF({
                 orientation: aspectRatio === '16/9' ? 'l' : 'p',
                 unit: 'px',
-                format: [width * 2, height * 2]
+                format: [width * scale, height * scale],
+                compress: false  // Better quality without compression
             })
 
             for (let i = 0; i < slides.length; i++) {
                 const el = slideRefs.current[i]
                 if (el) {
-                    if (i > 0) doc.addPage([width * 2, height * 2])
+                    if (i > 0) doc.addPage([width * scale, height * scale])
 
                     // Use domToPng from modern-screenshot (supports modern CSS)
                     const dataUrl = await domToPng(el, {
-                        scale: 2,
-                        backgroundColor: '#1e1b4b',
+                        scale: scale,
                         quality: 1,
                     })
 
-                    doc.addImage(dataUrl, 'PNG', 0, 0, width * 2, height * 2)
+                    doc.addImage(dataUrl, 'PNG', 0, 0, width * scale, height * scale)
                 }
             }
 
             const safeTopic = topic.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 30) || 'carousel'
-            doc.save(`${safeTopic}_carousel.pdf`)
+            doc.save(`${safeTopic}_carousel_HD.pdf`)
         } catch (error: any) {
             console.error("PDF export failed:", error?.message)
             alert(`PDF export failed: ${error?.message || 'Unknown error'}`)
