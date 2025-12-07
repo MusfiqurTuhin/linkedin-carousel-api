@@ -62,7 +62,8 @@ export function CarouselEditor() {
     // CTA (Call to Action) State
     const [ctaEmail, setCtaEmail] = useState('')
     const [ctaPhone, setCtaPhone] = useState('')
-    const [ctaText, setCtaText] = useState('Let\'s Connect!')
+    const [ctaText, setCtaText] = useState('Get a Quote')
+    const [ctaUrl, setCtaUrl] = useState('metamorphosis.com.bd/get-a-quote')
 
     // Refs
     const slideRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -630,11 +631,11 @@ export function CarouselEditor() {
 
                         {/* CTA Section for Last Slide */}
                         <div className="space-y-3 pt-3 border-t border-slate-700">
-                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500">📞 Last Slide CTA</h4>
+                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500">🔗 Last Slide CTA Button</h4>
                             <div className="space-y-2">
                                 <input
                                     className="w-full h-8 px-3 border border-slate-700 bg-slate-900 text-white rounded-md text-xs focus:border-purple-500 outline-none placeholder:text-slate-600"
-                                    placeholder="CTA Text: Let's Connect!"
+                                    placeholder="Button Text (e.g. Get a Quote)"
                                     value={ctaText}
                                     onChange={(e) => setCtaText(e.target.value)}
                                 />
@@ -642,17 +643,9 @@ export function CarouselEditor() {
                             <div className="space-y-2">
                                 <input
                                     className="w-full h-8 px-3 border border-slate-700 bg-slate-900 text-white rounded-md text-xs focus:border-purple-500 outline-none placeholder:text-slate-600"
-                                    placeholder="📧 Email: your@email.com"
-                                    value={ctaEmail}
-                                    onChange={(e) => setCtaEmail(e.target.value)}
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <input
-                                    className="w-full h-8 px-3 border border-slate-700 bg-slate-900 text-white rounded-md text-xs focus:border-purple-500 outline-none placeholder:text-slate-600"
-                                    placeholder="📱 Phone: +880 1XXX-XXXXXX"
-                                    value={ctaPhone}
-                                    onChange={(e) => setCtaPhone(e.target.value)}
+                                    placeholder="URL (e.g. yoursite.com/contact)"
+                                    value={ctaUrl}
+                                    onChange={(e) => setCtaUrl(e.target.value)}
                                 />
                             </div>
                         </div>
@@ -845,27 +838,29 @@ export function CarouselEditor() {
                                                     </p>
 
                                                     {/* CTA Section for Last Slide */}
-                                                    {idx === slides.length - 1 && (ctaEmail || ctaPhone) && (
-                                                        <div className="mt-auto pt-4 space-y-3">
+                                                    {idx === slides.length - 1 && (ctaText || ctaUrl) && (
+                                                        <div className="mt-auto pt-6 flex flex-col items-center">
                                                             <p
-                                                                className="text-lg font-bold"
-                                                                style={{ color: primaryColor, fontFamily: font }}
+                                                                className="text-base font-medium mb-4 text-center"
+                                                                style={{ color: textColor, fontFamily: font }}
                                                             >
-                                                                {ctaText || "Let's Connect!"}
+                                                                Contact us now!
                                                             </p>
-                                                            <div className="space-y-2">
-                                                                {ctaEmail && (
-                                                                    <div className="flex items-center gap-2 text-sm" style={{ color: textColor }}>
-                                                                        <span>📧</span>
-                                                                        <span style={{ fontFamily: font }}>{ctaEmail}</span>
-                                                                    </div>
-                                                                )}
-                                                                {ctaPhone && (
-                                                                    <div className="flex items-center gap-2 text-sm" style={{ color: textColor }}>
-                                                                        <span>📱</span>
-                                                                        <span style={{ fontFamily: font }}>{ctaPhone}</span>
-                                                                    </div>
-                                                                )}
+                                                            {/* Stylish Button like reference */}
+                                                            <div className="flex items-center rounded-full overflow-hidden shadow-lg" style={{ backgroundColor: '#F97316' }}>
+                                                                <span
+                                                                    className="px-5 py-2.5 text-white font-bold text-sm"
+                                                                    style={{ fontFamily: font }}
+                                                                >
+                                                                    {ctaText || 'Get a Quote'}
+                                                                </span>
+                                                                <span
+                                                                    className="px-5 py-2.5 bg-white text-slate-800 font-medium text-sm flex items-center gap-1"
+                                                                    style={{ fontFamily: font }}
+                                                                >
+                                                                    {ctaUrl}
+                                                                    <span className="text-orange-500">↗</span>
+                                                                </span>
                                                             </div>
                                                         </div>
                                                     )}
