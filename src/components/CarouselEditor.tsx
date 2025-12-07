@@ -933,7 +933,7 @@ export function CarouselEditor() {
                                                                 <span className="text-[10px] font-medium leading-tight" style={{ color: textColor }}>
                                                                     {brandHandle.includes('#1') ? (
                                                                         <>
-                                                                            <span className="text-yellow-400 font-black text-sm">#1</span>
+                                                                            <span className="text-orange-500 font-black text-sm">#1</span>
                                                                             <span> {brandHandle.replace('#1', '').trim()}</span>
                                                                         </>
                                                                     ) : brandHandle}
