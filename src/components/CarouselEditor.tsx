@@ -865,8 +865,8 @@ export function CarouselEditor() {
                                                         </div>
                                                     )}
 
-                                                    {/* Layout: CLASSIC (Bottom Image) */}
-                                                    {(!slide.layout || slide.layout === 'classic') && (slide.custom_image_url || slide.image_prompt) && (
+                                                    {/* Layout: CLASSIC (Bottom Image) - Hide on last slide */}
+                                                    {idx !== slides.length - 1 && (!slide.layout || slide.layout === 'classic') && (slide.custom_image_url || slide.image_prompt) && (
                                                         <div className="flex-1 min-h-0 rounded-lg overflow-hidden relative group/image mt-auto">
                                                             <img
                                                                 src={slide.custom_image_url || `https://image.pollinations.ai/prompt/${encodeURIComponent(slide.image_prompt)}?width=600&height=600&nologo=true&seed=${idx}`}
