@@ -847,19 +847,19 @@ export function CarouselEditor() {
                                                                 Contact us now!
                                                             </p>
                                                             {/* Stylish Button like reference */}
-                                                            <div className="flex items-center rounded-full overflow-hidden shadow-lg" style={{ backgroundColor: '#F97316' }}>
+                                                            <div className="flex items-center rounded-full overflow-hidden shadow-md" style={{ backgroundColor: '#F97316' }}>
                                                                 <span
-                                                                    className="px-5 py-2.5 text-white font-bold text-sm"
+                                                                    className="px-3 py-1.5 text-white font-bold text-[10px]"
                                                                     style={{ fontFamily: font }}
                                                                 >
                                                                     {ctaText || 'Get a Quote'}
                                                                 </span>
                                                                 <span
-                                                                    className="px-5 py-2.5 bg-white text-slate-800 font-medium text-sm flex items-center gap-1"
+                                                                    className="px-3 py-1.5 bg-white text-slate-800 font-medium text-[10px] flex items-center gap-1"
                                                                     style={{ fontFamily: font }}
                                                                 >
                                                                     {ctaUrl}
-                                                                    <span className="text-orange-500">↗</span>
+                                                                    <span className="text-orange-500 text-xs">↗</span>
                                                                 </span>
                                                             </div>
                                                         </div>
