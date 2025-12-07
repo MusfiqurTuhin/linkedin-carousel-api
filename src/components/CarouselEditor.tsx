@@ -55,7 +55,8 @@ export function CarouselEditor() {
 
     // Brand State
     const [brandName, setBrandName] = useState('')
-    const [brandHandle, setBrandHandle] = useState('')
+    const [brandHandle, setBrandHandle] = useState('#1 Official Odoo Silver Partner Company in Bangladesh')
+    const [brandLogoUrl, setBrandLogoUrl] = useState('https://www.metamorphosis.com.bd/web/image/website/1/logo/Metamorphosis?unique=1debd6e')
     const [apiKey, setApiKey] = useState('')
 
     // CTA (Call to Action) State
@@ -597,82 +598,25 @@ export function CarouselEditor() {
                             <User className="h-4 w-4" /> Personal Branding
                         </h3>
 
-                        {/* Logo Upload */}
-                        <div className="flex items-center gap-4">
-                            <div className="h-12 w-12 rounded-full border border-slate-700 bg-slate-900 overflow-hidden flex items-center justify-center relative group cursor-pointer">
-                                {logoUrl ? (
-                                    <img src={logoUrl} alt="Logo" className="w-full h-full object-cover" />
-                                ) : (
-                                    <User className="h-5 w-5 text-slate-500" />
-                                )}
-
-                                {/* Hidden Input Layer */}
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    className="absolute inset-0 opacity-0 cursor-pointer"
-                                    onChange={(e) => {
-                                        const file = e.target.files?.[0]
-                                        if (file) {
-                                            const url = URL.createObjectURL(file)
-                                            setLogoUrl(url)
-                                        }
-                                    }}
-                                />
-                            </div>
-                            <div className="flex-1">
-                                <p className="text-xs font-medium text-slate-300">Brand Logo</p>
-                                <p className="text-[10px] text-slate-500">Tap circle to upload</p>
-                            </div>
-                        </div>
-
-                        {/* Logo Size Slider */}
-                        {logoUrl && (
-                            <div className="space-y-2">
-                                <div className="flex justify-between items-center">
-                                    <label className="text-xs font-medium text-slate-300">Logo Size</label>
-                                    <span className="text-xs text-slate-500">{logoSize}px</span>
-                                </div>
-                                <input
-                                    type="range"
-                                    min="16"
-                                    max="80"
-                                    value={logoSize}
-                                    onChange={(e) => setLogoSize(Number(e.target.value))}
-                                    className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
-                                />
-                                <div className="flex gap-2">
-                                    <button
-                                        onClick={() => setLogoPosition({ x: 90, y: 10 })}
-                                        className="flex-1 text-[10px] px-2 py-1.5 bg-slate-800 text-slate-400 rounded hover:bg-slate-700 transition-colors"
-                                    >
-                                        Top Right
-                                    </button>
-                                    <button
-                                        onClick={() => setLogoPosition({ x: 10, y: 10 })}
-                                        className="flex-1 text-[10px] px-2 py-1.5 bg-slate-800 text-slate-400 rounded hover:bg-slate-700 transition-colors"
-                                    >
-                                        Top Left
-                                    </button>
-                                    <button
-                                        onClick={() => setLogoPosition({ x: 50, y: 90 })}
-                                        className="flex-1 text-[10px] px-2 py-1.5 bg-slate-800 text-slate-400 rounded hover:bg-slate-700 transition-colors"
-                                    >
-                                        Bottom
-                                    </button>
-                                </div>
-                                <p className="text-[10px] text-slate-500 text-center">💡 Drag logo on preview to reposition</p>
-                            </div>
-                        )}
-
+                        {/* Brand Logo URL */}
                         <div className="space-y-2">
-                            <label className="text-xs font-medium text-slate-300">Display Name</label>
-                            <input
-                                className="w-full h-9 px-3 border border-slate-700 bg-slate-900 text-white rounded-md text-sm focus:border-purple-500 outline-none placeholder:text-slate-600"
-                                placeholder="e.g. Musfiqur Tuhin"
-                                value={brandName}
-                                onChange={(e) => setBrandName(e.target.value)}
-                            />
+                            <label className="text-xs font-medium text-slate-300">Brand Logo URL</label>
+                            <div className="flex gap-2">
+                                <input
+                                    className="flex-1 h-9 px-3 border border-slate-700 bg-slate-900 text-white rounded-md text-xs focus:border-purple-500 outline-none placeholder:text-slate-600"
+                                    placeholder="https://your-logo-url.com/logo.png"
+                                    value={brandLogoUrl}
+                                    onChange={(e) => setBrandLogoUrl(e.target.value)}
+                                />
+                            </div>
+                            {brandLogoUrl && (
+                                <div className="flex items-center gap-2 mt-2">
+                                    <div className="h-10 w-32 bg-slate-800 rounded flex items-center justify-center overflow-hidden">
+                                        <img src={brandLogoUrl} alt="Brand Logo" className="max-h-full max-w-full object-contain" />
+                                    </div>
+                                    <span className="text-[10px] text-slate-500">Preview</span>
+                                </div>
+                            )}
                         </div>
                         <div className="space-y-2">
                             <label className="text-xs font-medium text-slate-300">Handle / Tagline</label>
@@ -977,12 +921,25 @@ export function CarouselEditor() {
                                                 )}
 
                                                 {/* Branding Footer */}
-                                                {(brandName || brandHandle) && (
+                                                {(brandLogoUrl || brandHandle) && (
                                                     <div className="p-4 border-t border-white/5 bg-black/20 backdrop-blur-md flex items-center gap-3 z-20 relative">
-                                                        <div className="flex flex-col min-w-0">
-                                                            <span className="text-xs font-bold truncate leading-none mb-1">{brandName}</span>
-                                                            <span className="text-[9px] opacity-60 truncate leading-none">{brandHandle}</span>
-                                                        </div>
+                                                        {brandLogoUrl && (
+                                                            <div className="h-8 w-auto max-w-[100px] shrink-0">
+                                                                <img src={brandLogoUrl} alt="Brand" className="h-full w-auto object-contain" />
+                                                            </div>
+                                                        )}
+                                                        {brandHandle && (
+                                                            <div className="flex flex-col min-w-0">
+                                                                <span className="text-[10px] font-medium leading-tight" style={{ color: textColor }}>
+                                                                    {brandHandle.includes('#1') ? (
+                                                                        <>
+                                                                            <span className="text-yellow-400 font-black text-sm">#1</span>
+                                                                            <span> {brandHandle.replace('#1', '').trim()}</span>
+                                                                        </>
+                                                                    ) : brandHandle}
+                                                                </span>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 )}
                                             </GlassCard>
