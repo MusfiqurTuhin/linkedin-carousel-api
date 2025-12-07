@@ -56,7 +56,7 @@ export function CarouselEditor() {
     // Brand State
     const [brandName, setBrandName] = useState('')
     const [brandHandle, setBrandHandle] = useState('#1 Official Odoo Silver Partner Company in Bangladesh')
-    const [brandLogoUrl, setBrandLogoUrl] = useState('https://www.metamorphosis.com.bd/web/image/website/1/logo/Metamorphosis?unique=1debd6e')
+    const [brandLogoUrl, setBrandLogoUrl] = useState('https://raw.githubusercontent.com/MusfiqurTuhin/linkedin-carousel-api/main/Copy%20of%20logo-800%20(1)-Photoroom.png')
     const [apiKey, setApiKey] = useState('')
 
     // CTA (Call to Action) State
