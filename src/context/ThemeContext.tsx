@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react'
 
 export type ThemeType = 'modern' | 'bold' | 'minimal' | 'glass-light' | 'glass-dark' | 'neon' | 'luxury' | 'sunset' | 'pure-white' | 'pure-black'
-export type FontType = 'Inter' | 'Roboto' | 'Playfair Display' | 'Outfit' | 'Space Grotesk' | 'Poppins' | 'Montserrat' | 'Lato' | 'Open Sans' | 'Merriweather' | 'Tiro Bangla' | 'Noto Serif Bengali' | 'Hind Siliguri' | 'Noto Sans Bengali'
+export type FontType = 'Inter' | 'Roboto' | 'Playfair Display' | 'Outfit' | 'Space Grotesk' | 'Poppins' | 'Montserrat' | 'Lato' | 'Open Sans' | 'Merriweather' | 'Caveat' | 'Tiro Bangla' | 'Noto Serif Bengali' | 'Hind Siliguri' | 'Noto Sans Bengali'
 export type TextAlignType = 'left' | 'center' | 'right'
 
 interface ThemeState {
@@ -17,6 +17,10 @@ interface ThemeState {
     textShadow: boolean
     cornerRadius: number
     logoUrl?: string
+    footerColor: string
+    footerGradient: boolean
+    backgroundImageUrl: string
+    backgroundOpacity: number
     setTheme: (t: ThemeType) => void
     setPrimaryColor: (c: string) => void
     setTextColor: (c: string) => void
@@ -27,6 +31,10 @@ interface ThemeState {
     setTextShadow: (s: boolean) => void
     setCornerRadius: (r: number) => void
     setLogoUrl: (l: string) => void
+    setFooterColor: (c: string) => void
+    setFooterGradient: (g: boolean) => void
+    setBackgroundImageUrl: (url: string) => void
+    setBackgroundOpacity: (o: number) => void
     applyPreset: (presetName: ThemeType) => void
 }
 
@@ -91,6 +99,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const [textShadow, setTextShadow] = useState<boolean>(true)
     const [cornerRadius, setCornerRadius] = useState<number>(16)
     const [logoUrl, setLogoUrl] = useState<string>('')
+    const [footerColor, setFooterColor] = useState<string>('#1a1a2e')
+    const [footerGradient, setFooterGradient] = useState<boolean>(false)
+    const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('')
+    const [backgroundOpacity, setBackgroundOpacity] = useState<number>(20)
 
     const applyPreset = (presetName: ThemeType) => {
         const p = PRESETS[presetName]
@@ -115,6 +127,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
             textShadow,
             cornerRadius,
             logoUrl,
+            footerColor,
+            footerGradient,
+            backgroundImageUrl,
+            backgroundOpacity,
             setTheme,
             setPrimaryColor,
             setTextColor,
@@ -125,6 +141,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
             setTextShadow,
             setCornerRadius,
             setLogoUrl,
+            setFooterColor,
+            setFooterGradient,
+            setBackgroundImageUrl,
+            setBackgroundOpacity,
             applyPreset
         }}>
             {children}

@@ -39,7 +39,11 @@ export function CarouselEditor() {
         textAlign, setTextAlign,
         textShadow, setTextShadow,
         cornerRadius, setCornerRadius,
-        logoUrl, setLogoUrl
+        logoUrl, setLogoUrl,
+        footerColor, setFooterColor,
+        footerGradient, setFooterGradient,
+        backgroundImageUrl, setBackgroundImageUrl,
+        backgroundOpacity, setBackgroundOpacity
     } = useTheme()
 
     const [topic, setTopic] = useState('')
@@ -448,7 +452,7 @@ export function CarouselEditor() {
                                     onChange={(e) => setFont(e.target.value as any)}
                                     className="w-full h-8 px-2 bg-slate-900 border border-slate-700 rounded text-xs text-white"
                                 >
-                                    {['Inter', 'Roboto', 'Playfair Display', 'Outfit', 'Space Grotesk', 'Poppins', 'Montserrat', 'Lato', 'Open Sans', 'Merriweather', 'Tiro Bangla', 'Noto Serif Bengali', 'Hind Siliguri', 'Noto Sans Bengali'].map(f => (
+                                    {['Inter', 'Roboto', 'Playfair Display', 'Outfit', 'Space Grotesk', 'Poppins', 'Montserrat', 'Lato', 'Open Sans', 'Merriweather', 'Caveat', 'Tiro Bangla', 'Noto Serif Bengali', 'Hind Siliguri', 'Noto Sans Bengali'].map(f => (
                                         <option key={f} value={f}>{f}</option>
                                     ))}
                                 </select>
@@ -512,6 +516,58 @@ export function CarouselEditor() {
                                 onChange={(e) => setCornerRadius(Number(e.target.value))}
                                 className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
                             />
+                        </div>
+
+                        {/* Footer Customization */}
+                        <div className="space-y-3 pt-3 border-t border-slate-800">
+                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Footer Style</h4>
+                            <div className="flex items-center gap-2">
+                                <label className="text-xs font-medium text-slate-400">Color</label>
+                                <input
+                                    type="color"
+                                    value={footerColor}
+                                    onChange={(e) => setFooterColor(e.target.value)}
+                                    className="w-8 h-6 rounded border border-slate-700 cursor-pointer"
+                                />
+                                <span className="text-[10px] text-slate-500 ml-auto">{footerColor}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <label className="text-xs font-medium text-slate-400">Gradient</label>
+                                <button
+                                    onClick={() => setFooterGradient(!footerGradient)}
+                                    className={`w-10 h-5 rounded-full transition-colors ${footerGradient ? 'bg-purple-500' : 'bg-slate-700'}`}
+                                >
+                                    <span className={`block w-4 h-4 bg-white rounded-full transition-transform mx-0.5 ${footerGradient ? 'translate-x-5' : ''}`} />
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Background Image */}
+                        <div className="space-y-3 pt-3 border-t border-slate-800">
+                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500">🖼️ Background Image</h4>
+                            <input
+                                className="w-full h-8 px-2 bg-slate-900 border border-slate-700 rounded text-xs text-white placeholder:text-slate-600 focus:border-purple-500 outline-none"
+                                placeholder="Image URL (optional)"
+                                value={backgroundImageUrl}
+                                onChange={(e) => setBackgroundImageUrl(e.target.value)}
+                            />
+                            <div className="flex justify-between items-center">
+                                <label className="text-xs font-medium text-slate-400">Opacity</label>
+                                <span className="text-[10px] text-slate-500">{backgroundOpacity}%</span>
+                            </div>
+                            <input
+                                type="range"
+                                min="5"
+                                max="100"
+                                value={backgroundOpacity}
+                                onChange={(e) => setBackgroundOpacity(Number(e.target.value))}
+                                className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                            />
+                            {backgroundImageUrl && (
+                                <div className="h-16 rounded overflow-hidden border border-slate-700">
+                                    <img src={backgroundImageUrl} alt="BG Preview" className="w-full h-full object-cover" style={{ opacity: backgroundOpacity / 100 }} />
+                                </div>
+                            )}
                         </div>
 
                         <div className="space-y-2 pt-2 border-t border-slate-800">
@@ -781,6 +837,17 @@ export function CarouselEditor() {
                                                 variant={theme.includes('light') ? 'light' : theme.includes('neon') ? 'neon' : 'dark'}
                                                 className="h-full flex flex-col border-none bg-black/10 backdrop-blur-md m-4 rounded-xl overflow-hidden shadow-inner relative"
                                             >
+                                                {/* Custom Background Image Overlay */}
+                                                {backgroundImageUrl && (
+                                                    <div className="absolute inset-0 z-0">
+                                                        <img
+                                                            src={backgroundImageUrl}
+                                                            alt="Background"
+                                                            className="w-full h-full object-cover"
+                                                            style={{ opacity: backgroundOpacity / 100 }}
+                                                        />
+                                                    </div>
+                                                )}
                                                 {/* Layout: VISUAL (Full Image Background) */}
                                                 {/* Layout: VISUAL (Full Image Background) */}
                                                 {slide.layout === 'visual' && (slide.custom_image_url || slide.image_prompt) && (
@@ -917,7 +984,14 @@ export function CarouselEditor() {
 
                                                 {/* Branding Footer */}
                                                 {(brandLogoUrl || brandHandle) && (
-                                                    <div className="p-4 border-t border-white/5 bg-black/20 backdrop-blur-md flex items-center gap-3 z-20 relative">
+                                                    <div
+                                                        className="p-4 border-t border-white/5 backdrop-blur-md flex items-center gap-3 z-20 relative"
+                                                        style={{
+                                                            background: footerGradient
+                                                                ? `linear-gradient(135deg, ${footerColor} 0%, ${footerColor}99 50%, ${footerColor}55 100%)`
+                                                                : footerColor
+                                                        }}
+                                                    >
                                                         {brandLogoUrl && (
                                                             <div className="h-8 w-auto max-w-[100px] shrink-0">
                                                                 <img src={brandLogoUrl} alt="Brand" className="h-full w-auto object-contain" />
