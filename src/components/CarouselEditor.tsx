@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Loader2, Plus, Calendar, Download, Palette, Type, User, Sparkles, LayoutTemplate, Rows, ArrowRight, ImagePlus, Ratio, Eye, EyeOff, Wand2 } from 'lucide-react'
 import { toPng } from 'html-to-image'
 import html2canvas from 'html2canvas'
-import { domToPng } from 'modern-screenshot'
+import { domToPng, domToJpeg } from 'modern-screenshot'
 import download from 'downloadjs'
 import jsPDF from 'jspdf'
 import { useTheme, ThemeType } from '@/context/ThemeContext'
@@ -287,14 +287,14 @@ export function CarouselEditor() {
         try {
             setIsLoading(true)
             const { width, height } = getDimensions()
-            const scale = 6  // Ultra HD quality: 6x resolution
+            const scale = 3  // Good quality: 3x resolution (balanced size/quality)
 
-            // Create PDF with high resolution
+            // Create PDF with compression enabled
             const doc = new jsPDF({
                 orientation: aspectRatio === '16/9' ? 'l' : 'p',
                 unit: 'px',
                 format: [width * scale, height * scale],
-                compress: false  // Better quality without compression
+                compress: true  // Enable compression for smaller file size
             })
 
             for (let i = 0; i < slides.length; i++) {
@@ -302,18 +302,18 @@ export function CarouselEditor() {
                 if (el) {
                     if (i > 0) doc.addPage([width * scale, height * scale])
 
-                    // Use domToPng from modern-screenshot (supports modern CSS)
-                    const dataUrl = await domToPng(el, {
+                    // Use domToJpeg for smaller file size with good quality
+                    const dataUrl = await domToJpeg(el, {
                         scale: scale,
-                        quality: 1,
+                        quality: 0.92,  // High quality JPEG (0.92 = great quality, much smaller size)
                     })
 
-                    doc.addImage(dataUrl, 'PNG', 0, 0, width * scale, height * scale)
+                    doc.addImage(dataUrl, 'JPEG', 0, 0, width * scale, height * scale, undefined, 'FAST')
                 }
             }
 
             const safeTopic = topic.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 30) || 'carousel'
-            doc.save(`${safeTopic}_carousel_HD.pdf`)
+            doc.save(`${safeTopic}_carousel.pdf`)
         } catch (error: any) {
             console.error("PDF export failed:", error?.message)
             alert(`PDF export failed: ${error?.message || 'Unknown error'}`)
