@@ -18,6 +18,7 @@ interface ThemeState {
     cornerRadius: number
     logoUrl?: string
     footerColor: string
+    footerTextColor: string
     footerGradient: boolean
     backgroundImageUrl: string
     backgroundOpacity: number
@@ -32,6 +33,7 @@ interface ThemeState {
     setCornerRadius: (r: number) => void
     setLogoUrl: (l: string) => void
     setFooterColor: (c: string) => void
+    setFooterTextColor: (c: string) => void
     setFooterGradient: (g: boolean) => void
     setBackgroundImageUrl: (url: string) => void
     setBackgroundOpacity: (o: number) => void
@@ -100,6 +102,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const [cornerRadius, setCornerRadius] = useState<number>(16)
     const [logoUrl, setLogoUrl] = useState<string>('')
     const [footerColor, setFooterColor] = useState<string>('#1a1a2e')
+    const [footerTextColor, setFooterTextColor] = useState<string>('#ffffff')
     const [footerGradient, setFooterGradient] = useState<boolean>(false)
     const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('')
     const [backgroundOpacity, setBackgroundOpacity] = useState<number>(20)
@@ -128,6 +131,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
             cornerRadius,
             logoUrl,
             footerColor,
+            footerTextColor,
             footerGradient,
             backgroundImageUrl,
             backgroundOpacity,
@@ -142,6 +146,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
             setCornerRadius,
             setLogoUrl,
             setFooterColor,
+            setFooterTextColor,
             setFooterGradient,
             setBackgroundImageUrl,
             setBackgroundOpacity,

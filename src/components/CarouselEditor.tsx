@@ -41,6 +41,7 @@ export function CarouselEditor() {
         cornerRadius, setCornerRadius,
         logoUrl, setLogoUrl,
         footerColor, setFooterColor,
+        footerTextColor, setFooterTextColor,
         footerGradient, setFooterGradient,
         backgroundImageUrl, setBackgroundImageUrl,
         backgroundOpacity, setBackgroundOpacity
@@ -52,6 +53,7 @@ export function CarouselEditor() {
     const [logoStyle, setLogoStyle] = useState<LogoStyle>('original')
     const [logoSize, setLogoSize] = useState(32)
     const [logoPosition, setLogoPosition] = useState({ x: 90, y: 10 }) // percentage-based
+    const [footerPosition, setFooterPosition] = useState<'bottom' | 'top'>('bottom')
     const [isDraggingLogo, setIsDraggingLogo] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [slides, setSlides] = useState<Slide[]>([])
@@ -522,14 +524,20 @@ export function CarouselEditor() {
                         <div className="space-y-3 pt-3 border-t border-slate-800">
                             <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Footer Style</h4>
                             <div className="flex items-center gap-2">
-                                <label className="text-xs font-medium text-slate-400">Color</label>
+                                <label className="text-xs font-medium text-slate-400">BG Color</label>
                                 <input
                                     type="color"
                                     value={footerColor}
                                     onChange={(e) => setFooterColor(e.target.value)}
                                     className="w-8 h-6 rounded border border-slate-700 cursor-pointer"
                                 />
-                                <span className="text-[10px] text-slate-500 ml-auto">{footerColor}</span>
+                                <label className="text-xs font-medium text-slate-400 ml-2">Text</label>
+                                <input
+                                    type="color"
+                                    value={footerTextColor}
+                                    onChange={(e) => setFooterTextColor(e.target.value)}
+                                    className="w-8 h-6 rounded border border-slate-700 cursor-pointer"
+                                />
                             </div>
                             <div className="flex items-center gap-2">
                                 <label className="text-xs font-medium text-slate-400">Gradient</label>
@@ -539,6 +547,23 @@ export function CarouselEditor() {
                                 >
                                     <span className={`block w-4 h-4 bg-white rounded-full transition-transform mx-0.5 ${footerGradient ? 'translate-x-5' : ''}`} />
                                 </button>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <label className="text-xs font-medium text-slate-400">Position</label>
+                                <div className="flex bg-slate-900 p-0.5 rounded-md border border-slate-700">
+                                    <button
+                                        onClick={() => setFooterPosition('bottom')}
+                                        className={`px-2 py-1 text-[10px] font-medium rounded ${footerPosition === 'bottom' ? 'bg-slate-700 text-white' : 'text-slate-400'}`}
+                                    >
+                                        Bottom
+                                    </button>
+                                    <button
+                                        onClick={() => setFooterPosition('top')}
+                                        className={`px-2 py-1 text-[10px] font-medium rounded ${footerPosition === 'top' ? 'bg-slate-700 text-white' : 'text-slate-400'}`}
+                                    >
+                                        Top
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -999,7 +1024,7 @@ export function CarouselEditor() {
                                                         )}
                                                         {brandHandle && (
                                                             <div className="flex flex-col min-w-0">
-                                                                <span className="text-[10px] font-medium leading-tight" style={{ color: textColor }}>
+                                                                <span className="text-[10px] font-medium leading-tight" style={{ color: footerTextColor }}>
                                                                     {brandHandle.includes('#1') ? (
                                                                         <>
                                                                             <span className="text-orange-500 font-black text-sm">#1</span>
