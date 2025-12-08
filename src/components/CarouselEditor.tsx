@@ -569,13 +569,33 @@ export function CarouselEditor() {
 
                         {/* Background Image */}
                         <div className="space-y-3 pt-3 border-t border-slate-800">
-                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500">🖼️ Background Image</h4>
-                            <input
-                                className="w-full h-8 px-2 bg-slate-900 border border-slate-700 rounded text-xs text-white placeholder:text-slate-600 focus:border-purple-500 outline-none"
-                                placeholder="Image URL (optional)"
-                                value={backgroundImageUrl}
-                                onChange={(e) => setBackgroundImageUrl(e.target.value)}
-                            />
+                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500">🖼️ Slide Background</h4>
+                            <div className="flex items-center gap-2">
+                                <label className="flex-1 flex items-center justify-center gap-2 h-9 px-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-md cursor-pointer transition-colors">
+                                    <ImagePlus className="w-4 h-4 text-purple-400" />
+                                    <span className="text-xs text-slate-300">{backgroundImageUrl ? 'Change Image' : 'Upload Image'}</span>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0]
+                                            if (file) {
+                                                const url = URL.createObjectURL(file)
+                                                setBackgroundImageUrl(url)
+                                            }
+                                        }}
+                                    />
+                                </label>
+                                {backgroundImageUrl && (
+                                    <button
+                                        onClick={() => setBackgroundImageUrl('')}
+                                        className="h-9 px-3 bg-red-900/50 hover:bg-red-800 text-red-300 text-xs rounded-md transition-colors"
+                                    >
+                                        Remove
+                                    </button>
+                                )}
+                            </div>
                             <div className="flex justify-between items-center">
                                 <label className="text-xs font-medium text-slate-400">Opacity</label>
                                 <span className="text-[10px] text-slate-500">{backgroundOpacity}%</span>
@@ -589,7 +609,7 @@ export function CarouselEditor() {
                                 className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
                             />
                             {backgroundImageUrl && (
-                                <div className="h-16 rounded overflow-hidden border border-slate-700">
+                                <div className="h-20 rounded overflow-hidden border border-slate-700">
                                     <img src={backgroundImageUrl} alt="BG Preview" className="w-full h-full object-cover" style={{ opacity: backgroundOpacity / 100 }} />
                                 </div>
                             )}
