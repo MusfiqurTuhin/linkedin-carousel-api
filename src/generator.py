@@ -144,7 +144,7 @@ class ContentGenerator:
             # Use Gemini's image generation model
             # Try gemini-2.5-flash first (supports image generation in response_modalities)
             image_model = genai.GenerativeModel(
-                'gemini-1.5-flash',
+                'gemini-2.5-flash',
                 generation_config=genai.GenerationConfig(
                     response_modalities=['image', 'text']
                 )
