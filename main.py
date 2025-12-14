@@ -20,7 +20,7 @@ app.add_middleware(
 )
 
 # Initialize DB connection (reusing existing logic)
-db_url = os.getenv('DATABASE_URL', 'sqlite:///data/posts.db')
+db_url = os.getenv('DATABASE_URL', 'sqlite:////tmp/posts.db')
 Session = init_db(db_url)
 
 class GenerateRequest(BaseModel):

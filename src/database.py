@@ -18,7 +18,7 @@ class Post(Base):
 
 import os
 
-def init_db(db_url='sqlite:///data/posts.db'):
+def init_db(db_url='sqlite:////tmp/posts.db'):
     # Check if we are passing a default sqlite path and need to verify write access
     if 'sqlite:///' in db_url:
         path = db_url.replace('sqlite:///', '')
