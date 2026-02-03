@@ -5,13 +5,46 @@ import json
 from src.database import Post
 
 class ContentGenerator:
+    MODELS = [
+        'gemini-3-flash-preview',   # Latest (Dec 2025): Balanced speed & frontier intelligence
+        'gemini-3-pro-preview',     # Latest (Nov 2025): Complex reasoning & agents
+        'gemini-2.5-flash-lite',    # Stable (July 2025): Fastest, high throughput
+        'gemini-2.5-flash',         # Stable (June 2025): Price-performance workhorse
+        'gemini-2.5-pro'            # Stable (June 2025): Deep reasoning fallback
+    ]
+
     def __init__(self, session, api_key=None):
         self.session = session
         final_api_key = api_key or os.getenv('GEMINI_API_KEY')
         if not final_api_key:
             raise ValueError("GEMINI_API_KEY not provided and not found in environment variables")
         genai.configure(api_key=final_api_key)
-        self.model = genai.GenerativeModel('gemini-2.5-flash')
+
+    def _generate_with_fallback(self, prompt, is_image=False):
+        """Helper to try multiple models in order as fallbacks."""
+        last_error = None
+        for model_name in self.MODELS:
+            try:
+                print(f"Attempting generation with {model_name}...")
+                if is_image:
+                    model = genai.GenerativeModel(
+                        model_name,
+                        generation_config=genai.GenerationConfig(
+                            response_modalities=['image', 'text']
+                        )
+                    )
+                else:
+                    model = genai.GenerativeModel(model_name)
+                
+                response = model.generate_content(prompt)
+                return response
+            except Exception as e:
+                print(f"Model {model_name} failed: {e}")
+                last_error = e
+                continue
+        
+        print("All models failed.")
+        raise last_error
 
     def generate_json(self, context, days):
         """Generates content and returns it as a list of dicts, without saving to DB."""
@@ -54,7 +87,7 @@ class ContentGenerator:
         Do not include markdown formatting like ```json. Just the raw JSON string.
         """
 
-        response = self.model.generate_content(prompt)
+        response = self._generate_with_fallback(prompt)
         
         try:
             # Clean up potential markdown formatting
@@ -96,9 +129,8 @@ class ContentGenerator:
         ]
         Do not include markdown.
         """
-        
         try:
-            response = self.model.generate_content(prompt)
+            response = self._generate_with_fallback(prompt)
             text = response.text.strip()
             if text.startswith('```json'):
                 text = text[7:]
@@ -141,22 +173,13 @@ class ContentGenerator:
         Returns base64 encoded image data.
         """
         try:
-            # Use Gemini's image generation model
-            # Try gemini-2.5-flash first (supports image generation in response_modalities)
-            image_model = genai.GenerativeModel(
-                'gemini-2.5-flash',
-                generation_config=genai.GenerationConfig(
-                    response_modalities=['image', 'text']
-                )
-            )
-            
             enhanced_prompt = f"""Generate a high-quality, professional image:
             {prompt}
             
             Style: Photorealistic, clean, modern, professional photography, 8K quality, 
             dramatic lighting, sharp focus, depth of field."""
             
-            response = image_model.generate_content(enhanced_prompt)
+            response = self._generate_with_fallback(enhanced_prompt, is_image=True)
             
             # Extract image from response
             for part in response.parts:
